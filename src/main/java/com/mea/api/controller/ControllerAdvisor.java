@@ -22,6 +22,10 @@ import com.mea.api.error.RegisterException;
 import com.mea.api.error.ResourceNotFoundException;
 import com.mea.api.misc.ApiResponseObject;
 import com.mea.api.model.Beliver;
+import com.mea.api.security.exception.AuthenticationException;
+
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.MalformedJwtException;
 
 @RestControllerAdvice
 public class ControllerAdvisor extends ResponseEntityExceptionHandler {
@@ -43,6 +47,27 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
 
 		return new ResponseEntity<>(res, HttpStatus.OK);
 	} 
+	
+	@ExceptionHandler(ExpiredJwtException.class)
+	public ResponseEntity<Object> handleJwtExpiredException(ExpiredJwtException ex, WebRequest request) {
+		String message = "A sessão expirou. Autentique-se novamente!";
+		Map<String, Object> res = new ApiResponseObject().response(Boolean.TRUE, message, Arrays.asList());
+		return new ResponseEntity<>(res, HttpStatus.OK);
+	}
+	@ExceptionHandler(AuthenticationException.class)
+	public ResponseEntity<Object> handleAuthenticationException(RuntimeException ex, WebRequest request) {
+
+		Map<String, Object> res = new ApiResponseObject().response(Boolean.TRUE, ex.getMessage(), Arrays.asList());
+
+		return new ResponseEntity<>(res, HttpStatus.OK);
+	}
+	
+	@ExceptionHandler(MalformedJwtException.class)
+	public ResponseEntity<Object> handleInvalidJWTException(MalformedJwtException ex, WebRequest request) {
+		String message = "O Token passado é inválido!";
+		Map<String, Object> res = new ApiResponseObject().response(Boolean.TRUE, message , Arrays.asList());
+		return new ResponseEntity<>(res, HttpStatus.OK);
+	}
 	
 	@Override
 	protected ResponseEntity<Object> handleNoHandlerFoundException(NoHandlerFoundException ex, HttpHeaders headers,

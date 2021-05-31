@@ -44,15 +44,15 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
 		.anyRequest().
 		authenticated()
 		.and()
-		//.exceptionHandling()
-		//.authenticationEntryPoint(jwtAuthenticationEntryPoint)
-		//.and()
+		.exceptionHandling()
+		.authenticationEntryPoint(jwtAuthenticationEntryPoint)
+		.and()
 		.sessionManagement()
 		.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 		// Enabled cors
 		httpSecurity.cors();
 		httpSecurity.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
-		//httpSecurity.addFilterBefore(jwtExceptionHandlerFilter, JwtRequestFilter.class);
+		httpSecurity.addFilterBefore(jwtExceptionHandlerFilter, JwtRequestFilter.class);
 
 	}
 	

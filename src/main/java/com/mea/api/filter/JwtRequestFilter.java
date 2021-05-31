@@ -36,7 +36,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws ServletException, IOException {
-    	try {
+    	
     		 final String authorizationHeader = request.getHeader("Authorization");
 
     	        String username = null;
@@ -62,15 +62,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     	            }
     	        }
     	        chain.doFilter(request, response);
-		} catch (Exception e) {
-			String message = "Você não está permitido a acessar este recurso. Por favor autentique-se !";
-
-			Map<String, Object> data = new ApiResponseObject().response(Boolean.TRUE, message, Arrays.asList());
-
-			response.setContentType("application/json;charset=UTF-8");
-			response.setStatus(200);
-			response.getWriter().write(objectMapper.writeValueAsString(data));
-		}
+		
        
     }
 	
