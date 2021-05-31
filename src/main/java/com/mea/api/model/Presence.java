@@ -1,6 +1,8 @@
 package com.mea.api.model;
 
 import java.time.LocalDateTime;
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -21,7 +23,6 @@ public class Presence {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
 	
 	
 	private LocalDateTime date;
@@ -49,15 +50,24 @@ public class Presence {
 	}
 
 
-	public void setDate(LocalDateTime date) {
-		this.date = date;
-	}
-
 	public void setTemperature(float temperature) {
 		this.temperature = temperature;
 	}
 
 	
+
+
+
+
+	public LocalDateTime getDate() {
+		return date;
+	}
+
+
+	public void setDate(LocalDateTime date) {
+		this.date = date;
+	}
+
 
 	public void setBeliver(Beliver beliver) {
 		this.beliver = beliver;
@@ -80,9 +90,7 @@ public class Presence {
 		return id;
 	}
 
-	public LocalDateTime getDate() {
-		return date;
-	}
+	
 
 	public float getTemperature() {
 		return temperature;

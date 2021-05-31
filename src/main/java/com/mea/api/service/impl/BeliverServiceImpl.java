@@ -60,6 +60,7 @@ public class BeliverServiceImpl implements BeliverService {
 	@Override
 	public Beliver findBeliverByContact(String contact) {
 		try {
+			System.out.println(contact);
 			return beliverRepository.findBeliverByContact(contact);
 		} catch (Exception e) {
 			throw new ResourceNotFoundException("Nao existe nenhum crente com esse contacto");

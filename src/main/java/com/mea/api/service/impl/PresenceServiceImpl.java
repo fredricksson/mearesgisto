@@ -6,6 +6,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -40,8 +42,12 @@ public class PresenceServiceImpl implements PresenceService{
 
 
 	@Override
+	@Transactional
 	public Presence registerBeliverToCult(Presence presence, Long idBeliver, Long idCult, Long idRegister) {
 		try {
+			java.sql.Date sqlDate = new java.sql.Date(new Date().getTime());
+			Presence pre = presenceRepository.verifyBeliverIsRegisted(sqlDate,idCult , idBeliver);
+			if (pre == null) {
 			Beliver beliver = beliverService.getBeliverById(idBeliver);
 			Register register = registerService.findRegisterById(idRegister);
 			Cult cult = cultService.findCultById(idCult);
@@ -50,6 +56,9 @@ public class PresenceServiceImpl implements PresenceService{
 			presence.setDate(LocalDateTime.now());
 			presence.setBeliver(beliver);
 			return	presenceRepository.save(presence);
+			} else {
+				throw new PresenceException("Crente ja foi registado para este culto!");
+			}
 		} catch (Exception e) {
 				throw new PresenceException(e.getMessage());
 		}

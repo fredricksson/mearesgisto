@@ -27,7 +27,8 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
 
 	@Autowired
 	private JwtRequestFilter jwtRequestFilter;
-	
+	@Autowired
+	JwtExceptionHandlerFilter jwtExceptionHandlerFilter;
 
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -43,9 +44,9 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
 		.anyRequest().
 		authenticated()
 		.and()
-		.exceptionHandling()
-		.authenticationEntryPoint(jwtAuthenticationEntryPoint)
-		.and()
+		//.exceptionHandling()
+		//.authenticationEntryPoint(jwtAuthenticationEntryPoint)
+		//.and()
 		.sessionManagement()
 		.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 		// Enabled cors
@@ -67,6 +68,7 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
 	public PasswordEncoder passwordEncoder() {
 		return NoOpPasswordEncoder.getInstance();
 	}
+	
 	
 	
 }
