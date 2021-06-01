@@ -28,7 +28,7 @@
           <q-avatar>
             <img src="~assets/bandtech.jpg">
           </q-avatar>
-          Powered
+          2.0 v
         </q-toolbar-title>
       </q-toolbar>
     </q-footer>

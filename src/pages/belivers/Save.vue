@@ -82,7 +82,7 @@
        </div>
 
         <q-stepper-navigation>
-          <q-btn :loading="loading" @click="registeBeliver" color="primary" icon="person_add" label="CADASTRAR" >
+          <q-btn :loading="loading" @click="saveBeliver" color="primary" icon="person_add" label="CADASTRAR" >
               <template v-slot:loading>
                 <q-spinner-hourglass class="on-left" />
                 Registando...
@@ -97,10 +97,23 @@
   </q-page>
 </template>
 <script>
-const stringOptions = [
-  'Google', 'Facebook', 'Twitter', 'Apple', 'Oracle'
-]
+import Vue from 'vue'
 export default {
+  created () {
+    this.$q.loading.hide()
+    if (!this.$q.cookies.has('token')){
+      this.$router.push('/login')
+      this.$q.notify({
+            type: 'negative',
+            message: "Sem autorização autentique-se",
+            icon: 'warning'
+          })
+      return
+    }  
+    this.headers = {
+      Authorization: `Bearer ${this.$q.cookies.get('token')}`
+    }
+  },
   data () {
     return {
       model: null,
@@ -114,7 +127,8 @@ export default {
       numHome: '',
       loading: false,
       error: false,
-      error2: false
+      error2: false,
+      headers: null
     }
   },
 
@@ -131,7 +145,7 @@ export default {
             this.step++
         }
     },
-    registeBeliver () {
+    async saveBeliver () {
       this.$refs.adress.validate()
       if (this.$refs.adress.hasError) {
           this.formHasError = true
@@ -139,6 +153,65 @@ export default {
         } else {
           this.error2 = false
           this.loading = true
+          const notif = this.$q.notify({
+            type: 'ongoing',
+            message: 'Cadastrando...'
+          })
+          try {
+            const dataSend = {
+              name: this.name,
+              contact: this.contact,
+              parentContact: this.parentContact,
+              address: this.adress,
+              num_block: this.numQuater,
+              num_home: this.numHome
+            }
+            const headers = this.headers
+            const { data } = await Vue.prototype.$axios.post(`${process.env.API}belivers`, dataSend, { headers } )
+            if (data.message === 'Você não está permitido a acessar este recurso. Por favor autentique-se!') {
+                this.loading = false
+                notif({
+                  type: 'negative',
+                  message: data.message,
+                  icon: 'warning'
+                })
+                this.$router.push('login')
+                return
+            }
+
+            if (data.error) {
+              notif({
+                type: 'negative',
+                message: data.message + '<br><strong style="font-size: 16px">CODIGO: '+data.data.id+ "</strong> <br> <strong>" + data.data.name + "<strong>",
+                icon: 'warning',
+                timeout: 20000,
+                html: true,
+                actions: [
+                  { label: 'fechar', color: 'white', handler: () => { /* ... */ } }
+                ]
+              })
+              
+            } else {
+              notif({
+                type: 'primary',
+                message: '<strong style="font-size: 16px">CODIGO: '+data.data.id+ "</strong> <br> <strong>" + data.data.name + "<strong>",
+                timeout: 40000,
+                icon: 'check',
+                html: true,
+                actions: [
+                  { label: 'fechar', color: 'white', handler: () => { /* ... */ } }
+                ]
+              })
+              }
+          } catch (error) {
+            notif({
+              type: 'negative',
+              message: "Ocorreu um erro, autentique-se",
+              icon: 'warning'
+            })
+            this.$router.push('/login')
+          }
+          this.loading = false
         }
     }
   }

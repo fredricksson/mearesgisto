@@ -7,8 +7,8 @@
       <div class="row">
           
         <q-card square bordered class=" shadow-1" >
-            <q-card-section v-show="true" class="bg-red">
-                <span class="row justify-center text-overline text-white">nome/contacto invalido</span>
+            <q-card-section v-show="msg" class="bg-red">
+                <span class="row justify-center text-overline text-white">{{ msg }}</span>
             </q-card-section>
           <q-card-section>
               
@@ -33,7 +33,7 @@
             </q-form>
           </q-card-section>
           <q-card-actions class="q-px-md">
-            <q-btn unelevated :loading="loading" @click="loading = true" color="yellow-9" size="lg" class="full-width" label="Login" >
+            <q-btn unelevated :loading="loading" icon="login" @click="login" color="yellow-9" size="lg" class="full-width" label="Login" >
                 <template v-slot:loading>
                 <q-spinner-hourglass class="on-left" />
                 Verificando...
@@ -47,13 +47,63 @@
 </template>
 
 <script>
+import Vue from 'vue'
 export default {
   name: 'Login',
+  created () {
+    this.$q.loading.hide()
+    this.$q.notify.setDefaults({
+      position: 'top',
+    })
+  },
   data () {
     return {
       username: '',
       password: '',
-      loading: false
+      loading: false,
+      msg: ''
+    }
+  },
+  methods: {
+    async login () {
+      this.msg = ''
+      this.$refs.username.validate()
+        this.$refs.contact.validate()
+        if (this.$refs.username.hasError || this.$refs.contact.hasError) {
+          this.formHasError = true
+          return
+        }
+      this.loading = true
+      const dataSend = {
+        username: this.username,
+        password: this.password
+      }
+      try {
+        
+        const { data } = await Vue.prototype.$axios.post(`${process.env.API}authenticate`, dataSend)
+        if (data.error) {
+          this.msg = data.message
+          this.$q.notify({
+            type: 'negative',
+            message: data.message
+          })          
+        } else {
+          this.msg = ''
+          this.$q.loading.show()
+          this.$q.cookies.set('token', data.data.token, {
+            secure: true,
+            expires: 86400000
+          })
+          this.$router.push("/")
+        }
+      } catch (error) {
+        this.$q.notify({
+            type: 'negative',
+            message: "Ocorreu um erro pode ser conexão a internet",
+            icon: 'wifi_off'
+          })
+      }
+      this.loading = false
     }
   }
 }

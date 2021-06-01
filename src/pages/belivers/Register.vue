@@ -8,6 +8,7 @@
           </q-card-section>
              <q-form class="q-px-sm  q-pb-lg q-gutter-md">
                 <q-select
+                    ref="cult"
                     filled
                     v-model="cult"
                     clearable
@@ -16,6 +17,8 @@
                     :options="options"
                     @filter="filterFn"
                     @filter-abort="abortFilterFn"
+                    @input="saveCultInLocalStorage"
+                    :rules="[val => !!val || 'Codigo é obrigatoria!']"
                 >
                     <template v-slot:no-option>
                     <q-item>
@@ -57,12 +60,12 @@
         <q-card-section class="row justify-center items-center">
           
           <p ><q-icon name="help_outline" size="38px"  /></p>
-          <span class="q-ml-sm text-h6">Fredrickson Bande</span>
+          <p class="q-ml-sm text-h6">{{ confirmName }}</p>
         </q-card-section>
 
         <q-card-actions align="right">
-          <q-btn icon="close" label="Cancelar" color="red" v-close-popup />
-          <q-btn icon="check" label="Registar" color="blue" v-close-popup />
+          <q-btn icon="close" label="Cancelar" @click="loading = false" color="red" v-close-popup />
+          <q-btn icon="check" label="Registar" @click="registerBeliver" color="blue" v-close-popup />
         </q-card-actions>
       </q-card>
     </q-dialog>
@@ -70,7 +73,7 @@
       <q-card>
         <q-card-section class="row justify-center items-center">
           
-          <p ><q-icon name="dangerous" size="38px" color="red"  /></p>
+          <p ><q-icon name="dangerous" size="38px" color="red"  /></p><br>
           <span class="q-ml-sm text-bold">Temperatura inválida!</span>
         </q-card-section>
 
@@ -79,13 +82,42 @@
         </q-card-actions>
       </q-card>
     </q-dialog>
+      <q-dialog v-model="errorId" >
+      <q-card>
+        <q-card-section class="row justify-center items-center">
+          
+          <p ><q-icon name="dangerous" size="38px" color="red"  /></p><br>
+          <p class="q-ml-sm text-bold">Codigo inexistente!</p>
+        </q-card-section>
+
+        <q-card-actions align="right">
+          <q-btn icon="check" class="full-width"  label="Ok" color="blue" v-close-popup />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
   </q-page>
 </template>
 <script>
-const stringOptions = [
-  'Google', 'Facebook', 'Twitter', 'Apple', 'Oracle'
-]
+import Vue from 'vue'
 export default {
+  created () {
+    this.$q.loading.hide()
+    if (this.$q.localStorage.has('cult')) {
+      this.cult = this.$q.localStorage.getItem('cult')
+    }
+    if (!this.$q.cookies.has('token')){
+      this.$router.push('/login')
+      this.$q.notify({
+            type: 'negative',
+            message: "Sem autorização autentique-se",
+            icon: 'warning'
+          })
+      return
+    }  
+    this.headers = {
+      Authorization: `Bearer ${this.$q.cookies.get('token')}`
+    }
+  },
   data () {
     return {
       cult: null,
@@ -94,34 +126,78 @@ export default {
       temperature: '',
       loading: false,
       confirm: false,
-      error: false
+      error: false,
+      errorId: false,
+      confirmName: '',
+      headers: null
     }
   },
 
   methods: {
-    filterFn (val, update, abort) {
+    saveCultInLocalStorage () {
+      this.$q.localStorage.set("cult", this.cult)
+    },
+   async filterFn (val, update, abort) {
       if (this.options !== null) {
         // already loaded
         update()
         return
       }
-
-      setTimeout(() => {
+        const headers = this.headers
+        const { data } = await Vue.prototype.$axios.get(`${process.env.API}cults`, { headers } )
+        if (data.message === 'Você não está permitido a acessar este recurso. Por favor autentique-se!') {
+              this.loading = false
+              this.$q.notify({
+                type: 'negative',
+                message: data.message,
+                icon: 'warning'
+              })
+              this.$router.push('login')
+              return
+          }
         update(() => {
-          this.options = stringOptions
+          this.options = data.data.map(cult => cult.name)
         })
-      }, 2000)
+     
     },
 
     abortFilterFn () {
       // console.log('delayed filter aborted')
     },
-    registerBeliverToCult () {
-        
+    async registerBeliver () {
+      try {
+        const headers = this.headers
+        const { data } = await Vue.prototype.$axios.post(`${process.env.API}presence/${this.id}/${this.cult}`, {} ,{ headers } )
+          if (data.error) {
+            this.$q.notify({
+                type: 'negative',
+                message: data.message,
+                icon: 'warning'
+              })
+          } else {
+            this.$q.notify({
+                type: 'positive',
+                message: data.message,
+                icon: 'check'
+              })
+          }
+      } catch (error) {
+        this.$q.notify({
+            type: 'negative',
+            message: "Ocorreu um erro, autentique-se",
+            icon: 'warning'
+          })
+        this.$router.push('/login')
+      }
+      this.loading = false
+    },
+    async registerBeliverToCult () {
+        // verify if exists
         
         this.$refs.id.validate()
         this.$refs.temperature.validate()
-        if (this.$refs.id.hasError || this.$refs.temperature.hasError) {
+        this.$refs.cult.validate()
+        if (this.$refs.id.hasError || this.$refs.temperature.hasError || this.$refs.cult.hasError) {
           this.formHasError = true
         } else {
             if (!(this.temperature > 25 && this.temperature < 40)) {
@@ -129,7 +205,32 @@ export default {
                 return
             }
             this.loading = true
-            this.confirm = true
+            const headers = this.headers
+            const { data } = await Vue.prototype.$axios.get(`${process.env.API}belivers/${this.id}`, { headers } )
+            if (data.message === 'Você não está permitido a acessar este recurso. Por favor autentique-se!') {
+              this.loading = false
+              this.$q.notify({
+                type: 'negative',
+                message: data.message,
+                icon: 'warning'
+              })
+              this.$router.push('login')
+              return
+            }
+            if (data.error) {
+              // id inexistente
+              this.loading = false
+              this.$q.notify({
+                type: 'negative',
+                message: data.message,
+                icon: 'warning'
+              })
+              
+            } else {
+              this.confirmName = data.data.name
+              this.confirm = true
+            }
+
         }
     }
   }

@@ -8,7 +8,7 @@
 /* eslint-env node */
 const ESLintPlugin = require('eslint-webpack-plugin')
 
-module.exports = function (/* ctx */) {
+module.exports = function (ctx) {
   return {
     // https://v1.quasar.dev/quasar-cli/supporting-ts
     supportTS: false,
@@ -47,7 +47,11 @@ module.exports = function (/* ctx */) {
     // Full list of options: https://v1.quasar.dev/quasar-cli/quasar-conf-js#Property%3A-build
     build: {
       vueRouterMode: 'history', // available values: 'hash', 'history'
-
+      env: {
+        API: ctx.dev
+          ? 'http://localhost:8080/api/v1/'
+          : 'https://bookeepy.herokuapp.com/api/v1/'
+      },
       // transpile: false,
 
       // Add dependencies for transpiling with Babel (Array of string/regex)
@@ -98,7 +102,7 @@ module.exports = function (/* ctx */) {
       // directives: [],
 
       // Quasar plugins
-      plugins: []
+      plugins: ["Loading", "Notify", "Cookies", 'LocalStorage']
     },
 
     // animations: 'all', // --- includes all animations
