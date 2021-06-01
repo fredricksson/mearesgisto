@@ -7,6 +7,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,6 +27,11 @@ public class CultController {
 	@PostMapping("/cults")
 	public ResponseEntity<Map<String, Object>> create(@Valid @RequestBody Cult cult ){
 		Map<String, Object> res = new ApiResponseObject().response(Boolean.TRUE, "Adiccionado com sucesso!", cultService.create(cult));
+		return new ResponseEntity<>(res,  HttpStatus.OK);
+	}
+	@GetMapping("/cults")
+	public ResponseEntity<Map<String, Object>> all(){
+		Map<String, Object> res = new ApiResponseObject().response(Boolean.TRUE, " sucesso!", cultService.getCults());
 		return new ResponseEntity<>(res,  HttpStatus.OK);
 	}
 }

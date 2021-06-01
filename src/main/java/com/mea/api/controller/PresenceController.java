@@ -33,13 +33,12 @@ public class PresenceController {
 	
 	@Autowired
 	JwtUtil jwtUtil;
-	@PostMapping("/presence/{idBeliver}/{idCult}")
-	public ResponseEntity<Map<String, Object>> registerBeliver(@Valid @RequestBody Presence presence, @PathVariable("idBeliver") Long idBeliver, @PathVariable("idCult") Long idCult,HttpServletRequest req){
-		System.out.println(req.getHeader("Authorization"));
+	@PostMapping("/presence/{idBeliver}/{cult}")
+	public ResponseEntity<Map<String, Object>> registerBeliver(@Valid @RequestBody Presence presence, @PathVariable("idBeliver") Long idBeliver, @PathVariable("cult") String cult,HttpServletRequest req){
 		Long  id = jwtUtil.extractId(req.getHeader("Authorization"));
 
 		Map<String, Object> res = new ApiResponseObject().
-				response(Boolean.FALSE, "Registado com sucesso!", presenceService.registerBeliverToCult(presence, idBeliver, idCult, id));
+				response(Boolean.FALSE, "Registado com sucesso!", presenceService.registerBeliverToCult(presence, idBeliver, cult, id));
 		return new ResponseEntity<>(res, HttpStatus.OK);
 		
 	}

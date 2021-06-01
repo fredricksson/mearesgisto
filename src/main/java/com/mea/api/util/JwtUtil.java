@@ -75,7 +75,7 @@ public class JwtUtil {
 
 		Date issuedTime = new Date(System.currentTimeMillis());
 
-		Date expirationTime = new Date(System.currentTimeMillis() + 7200000);
+		Date expirationTime = new Date(System.currentTimeMillis() + 86400000);
 
 		return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(issuedTime)
 				.setExpiration(expirationTime)

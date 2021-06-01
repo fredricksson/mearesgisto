@@ -36,7 +36,7 @@ public class CultServiceImpl implements CultService {
 	@Override
 	public List<Cult> getCults() {
 		// TODO Auto-generated method stub
-		return null;
+		return cultRepository.findAll();
 	}
 
 }

@@ -10,7 +10,7 @@ import com.mea.api.model.Presence;
 @Service
 public interface PresenceService {
 
-	Presence registerBeliverToCult(Presence presence, Long idBeliver, Long idCult, Long idRegister);
+	Presence registerBeliverToCult(Presence presence, Long idBeliver, String cult, Long idRegister);
 	
 	Map<String, Object> getPresences(int page);
 }

@@ -24,8 +24,6 @@ public class BeliverServiceImpl implements BeliverService {
 	@Override
 	public Beliver createBeliver(Beliver beliver) {
 		Beliver beliver1 = beliverRepository.findBeliverByContact(beliver.getContact());
-		System.out.println("fred");
-		System.out.println(beliver1);
 		if (beliver1 == null) {
 			
 			return  beliverRepository.save(beliver);
@@ -60,8 +58,11 @@ public class BeliverServiceImpl implements BeliverService {
 	@Override
 	public Beliver findBeliverByContact(String contact) {
 		try {
-			System.out.println(contact);
-			return beliverRepository.findBeliverByContact(contact);
+			Beliver beliver = beliverRepository.findBeliverByContact(contact);
+			if (beliver == null) {
+				throw new ResourceNotFoundException("Nao existe nenhum crente com esse contacto");
+			}
+			return beliver;
 		} catch (Exception e) {
 			throw new ResourceNotFoundException("Nao existe nenhum crente com esse contacto");
 		}

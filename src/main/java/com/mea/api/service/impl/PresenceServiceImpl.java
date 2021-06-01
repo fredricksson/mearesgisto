@@ -18,6 +18,7 @@ import com.mea.api.model.Beliver;
 import com.mea.api.model.Cult;
 import com.mea.api.model.Presence;
 import com.mea.api.model.Register;
+import com.mea.api.repository.CultRepository;
 import com.mea.api.repository.PresenceRepository;
 import com.mea.api.service.BeliverService;
 import com.mea.api.service.CultService;
@@ -29,6 +30,9 @@ public class PresenceServiceImpl implements PresenceService{
 	
 	@Autowired
 	PresenceRepository presenceRepository;
+	
+	@Autowired
+	CultRepository cultRepository;
 
 	
 	@Autowired
@@ -43,9 +47,10 @@ public class PresenceServiceImpl implements PresenceService{
 
 	@Override
 	@Transactional
-	public Presence registerBeliverToCult(Presence presence, Long idBeliver, Long idCult, Long idRegister) {
+	public Presence registerBeliverToCult(Presence presence, Long idBeliver, String name, Long idRegister) {
 		try {
 			java.sql.Date sqlDate = new java.sql.Date(new Date().getTime());
+			Long idCult = cultRepository.getId(name);
 			Presence pre = presenceRepository.verifyBeliverIsRegisted(sqlDate,idCult , idBeliver);
 			if (pre == null) {
 			Beliver beliver = beliverService.getBeliverById(idBeliver);

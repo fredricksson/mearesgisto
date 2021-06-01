@@ -34,7 +34,7 @@ public class BeliverController {
 	}
 	@GetMapping("belivers/findByContact/{contact}")
 	public ResponseEntity<Map<String,Object>> findByContact(@PathVariable("contact") String contact){
-		Map<String, Object> res =  new ApiResponseObject().response(Boolean.TRUE, "Successo!", beliverService.findBeliverByContact(contact));
+		Map<String, Object> res =  new ApiResponseObject().response(Boolean.FALSE, "Successo!", beliverService.findBeliverByContact(contact));
 		return  new ResponseEntity<>(res, HttpStatus.OK);
 	}
 	@PostMapping("/belivers")

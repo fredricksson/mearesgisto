@@ -8,6 +8,8 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -21,6 +23,7 @@ import com.mea.api.security.service.MyUserDetailsService;
 import com.mea.api.util.JwtUtil;
 
 @RestController
+@RequestMapping("/api/v1")
 public class AuthenticateController {
 	@Autowired
 	private AuthenticationManager authenticationManager;
@@ -30,8 +33,8 @@ public class AuthenticateController {
 
 	@Autowired
 	private JwtUtil jwtTokenUtil;
-
-	@RequestMapping(value = "/authenticate", method = RequestMethod.POST)
+	@CrossOrigin
+	@PostMapping(value = "/authenticate")
 	public ResponseEntity<Map<String, Object>> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest)
 			throws Exception {
 		try {
