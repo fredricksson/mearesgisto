@@ -14,6 +14,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import com.mea.api.error.PresenceException;
+import com.mea.api.error.ResourceNotFoundException;
 import com.mea.api.model.Beliver;
 import com.mea.api.model.Cult;
 import com.mea.api.model.Presence;
@@ -80,6 +81,20 @@ public class PresenceServiceImpl implements PresenceService{
 		data.put("numPages", result.getTotalPages());
 		data.put("presences", result.getContent());
 		return data;
+	}
+
+
+	@Override
+	public int quantityOfBeliversOnCult(String cult) {
+		// TODO Auto-generated method stub
+		try {
+			java.sql.Date sqlDate = new java.sql.Date(new Date().getTime());
+			Long idCult = cultRepository.getId(cult);
+			return presenceRepository.quantityOfBeliversOnCult(idCult, sqlDate);
+		} catch (Exception e) {
+			throw new ResourceNotFoundException(e.getMessage());
+		}
+		
 	}
 
 	

@@ -38,7 +38,7 @@ public class PresenceController {
 		Long  id = jwtUtil.extractId(req.getHeader("Authorization"));
 
 		Map<String, Object> res = new ApiResponseObject().
-				response(Boolean.FALSE, "Registado com sucesso!", presenceService.registerBeliverToCult(presence, idBeliver, cult, id));
+	    response(Boolean.FALSE, "Registado com sucesso!", presenceService.registerBeliverToCult(presence, idBeliver, cult, id));
 		return new ResponseEntity<>(res, HttpStatus.OK);
 		
 	}
@@ -46,5 +46,12 @@ public class PresenceController {
 	@GetMapping("presences")
 	public ResponseEntity<Map<String, Object>> findAllPaginable(){
 		return new ResponseEntity<>(presenceService.getPresences(0),HttpStatus.OK);
+	}
+	
+	@GetMapping("presences/quantity/{name}")
+	public ResponseEntity<Map<String, Object>> quantityOfBeliversOnCult(@PathVariable("name") String name){
+		Map<String, Object> res = new ApiResponseObject().
+	   response(Boolean.FALSE, "Sucesso!", presenceService.quantityOfBeliversOnCult(name));
+	   return new ResponseEntity<>(res, HttpStatus.OK);
 	}
 }

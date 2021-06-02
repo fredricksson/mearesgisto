@@ -13,4 +13,8 @@ public interface PresenceRepository extends JpaRepository<Presence, Long>{
 	
 	@Query(value = "select * from presence  where date(date) = :date and cult_id = :cult_id and beliver_id = :beliver_id", nativeQuery = true)
 	Presence verifyBeliverIsRegisted(@Param("date") Date date, @Param("cult_id") Long cult_id, @Param("beliver_id") Long beliver_id) ;
+	
+	
+	@Query(value = "select count(beliver_id) from presence where date(date) = :date and cult_id = :cult_id", nativeQuery = true)
+	int quantityOfBeliversOnCult(@Param("cult_id") Long cult_id, @Param("date") Date date);
 }
