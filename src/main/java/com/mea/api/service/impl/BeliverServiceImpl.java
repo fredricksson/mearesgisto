@@ -1,5 +1,6 @@
 package com.mea.api.service.impl;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -25,7 +26,7 @@ public class BeliverServiceImpl implements BeliverService {
 	public Beliver createBeliver(Beliver beliver) {
 		Beliver beliver1 = beliverRepository.findBeliverByContact(beliver.getContact());
 		if (beliver1 == null) {
-			
+			beliver.setDate(LocalDateTime.now());
 			return  beliverRepository.save(beliver);
 		}
 		

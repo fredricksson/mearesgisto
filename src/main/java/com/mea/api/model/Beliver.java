@@ -1,5 +1,7 @@
 package com.mea.api.model;
 
+import java.time.LocalDateTime;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -31,6 +33,9 @@ public class Beliver {
 	@Column(nullable = false)
 	@NotBlank(message = "Conctacto familiar nao pode estar vazio")
 	private String parentContact;
+	
+	@Column(name = "created_at")
+	private LocalDateTime date;
 	
 	@Column(nullable = false)
 	@NotBlank(message = "Endereco nao pode estar vazio")
@@ -79,6 +84,12 @@ public class Beliver {
 	}
 	public void setNum_home(int num_home) {
 		this.num_home = num_home;
+	}
+	public LocalDateTime getDate() {
+		return date;
+	}
+	public void setDate(LocalDateTime date) {
+		this.date = date;
 	}
 
 		

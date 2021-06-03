@@ -1,5 +1,6 @@
 package com.mea.api.service.impl;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -39,6 +40,7 @@ public class RegisterServiceImpl implements RegisterService {
 	@Override
 	public Register createRegister(Register resgister) {
 		try {
+			resgister.setDate(LocalDateTime.now());
 			return registerRepository.save(resgister);
 			
 		} catch (Exception e) {

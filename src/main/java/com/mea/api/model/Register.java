@@ -1,5 +1,7 @@
 package com.mea.api.model;
 
+import java.time.LocalDateTime;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -22,6 +24,9 @@ public class Register {
 	@NotBlank(message = "O contacto do registador nao pode estar vazio")
 	private String contact;
 
+	@Column(name = "created_at")
+	private LocalDateTime date;
+	
 	public Long getId() {
 		return id;
 	}
@@ -44,6 +49,14 @@ public class Register {
 
 	public void setContact(String contact) {
 		this.contact = contact;
+	}
+
+	public LocalDateTime getDate() {
+		return date;
+	}
+
+	public void setDate(LocalDateTime date) {
+		this.date = date;
 	}
 	
 	
