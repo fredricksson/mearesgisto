@@ -50,7 +50,7 @@ module.exports = function (ctx) {
       env: {
         API: ctx.dev
           ? 'http://localhost:8080/api/v1/'
-          : 'https://bookeepy.herokuapp.com/api/v1/'
+          : ' https://git.heroku.com/mea-api.git/api/v1/'
       },
       // transpile: false,
 
@@ -119,7 +119,7 @@ module.exports = function (ctx) {
       workboxPluginMode: 'GenerateSW', // 'GenerateSW' or 'InjectManifest'
       workboxOptions: {}, // only for GenerateSW
       manifest: {
-        name: `mea_registo`,
+        name: `mearegisto`,
         short_name: `mea_registo`,
         description: `sistema de registo`,
         display: 'standalone',

@@ -4,7 +4,7 @@
         <q-card square  class=" shadow-3 bg-yellow-1">
           <q-card-section>
                <q-card-section>
-            <span class="text-overline  text-yellow-10 q-my-xs" >Registados: 20</span>
+            <span class="text-overline  text-yellow-10 q-my-xs" >Registados: {{ quantity }}</span>
           </q-card-section>
              <q-form class="q-px-sm  q-pb-lg q-gutter-md">
                 <q-select
@@ -117,9 +117,11 @@ export default {
     this.headers = {
       Authorization: `Bearer ${this.$q.cookies.get('token')}`
     }
+    setInterval(this.quantityBelivers, 1000*60*4)
   },
   data () {
     return {
+      quantity: '...',
       cult: null,
       options: null,
       id: '',
@@ -135,7 +137,10 @@ export default {
 
   methods: {
     saveCultInLocalStorage () {
+      if (this.cult !== null) {
+      this.quantityBelivers()
       this.$q.localStorage.set("cult", this.cult)
+      }
     },
    async filterFn (val, update, abort) {
       if (this.options !== null) {
@@ -160,7 +165,25 @@ export default {
         })
      
     },
+    async quantityBelivers () {
+      
+      try{
+        const headers = this.headers
+        const { data } = await Vue.prototype.$axios.get(`${process.env.API}presences/quantity/${this.cult}`, { headers } )
 
+        if (data.error) {
+          this.$router.push('/login')
+        } else {
+          this.quantity = data.data
+        }
+      }catch (err) {
+        this.$q.notify({
+            type: 'negative',
+            message: "Ocorreu um erro, Pode ser conexão a internet.",
+            icon: 'warning'
+          })
+      }
+    },
     abortFilterFn () {
       // console.log('delayed filter aborted')
     },
@@ -180,6 +203,7 @@ export default {
                 message: data.message,
                 icon: 'check'
               })
+              this.quantityBelivers()
           }
       } catch (error) {
         this.$q.notify({

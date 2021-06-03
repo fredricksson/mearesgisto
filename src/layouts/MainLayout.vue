@@ -9,6 +9,7 @@
           </q-avatar>
           Mea
         </q-toolbar-title>
+        <q-btn flat text-color="purple" @click="logout()">Sair</q-btn>
       </q-toolbar>
 
       <q-tabs align="left">
@@ -40,6 +41,12 @@
 export default {
   data () {
     return {
+    }
+  },
+  methods: {
+    logout () {
+      this.$q.localStorage.remove('token')
+      this.$router.push('/login')
     }
   }
 }
