@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 
@@ -19,7 +20,8 @@ import lombok.Setter;
 public class Beliver {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	//@SequenceGenerator(name = "some",sequenceName = "seq_name_in_db2")
+	@GeneratedValue(strategy = GenerationType.IDENTITY/*, generator = "some"*/)
 	private Long id;
 	
 	@Column(nullable = false)

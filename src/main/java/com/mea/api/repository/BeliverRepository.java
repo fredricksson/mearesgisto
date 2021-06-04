@@ -8,8 +8,9 @@ import com.mea.api.model.Beliver;
 
 public interface BeliverRepository extends JpaRepository<Beliver, Long>{
 	
-	@Query(value = "select * from beliver where contact = :contact", nativeQuery = true)
-	Beliver findBeliverByContact(@Param("contact") String contact) ;
+	@Query(value = "select * from beliver where contact = :contact or contact = :contact2", nativeQuery = true)
+	Beliver findBeliverByContact(@Param("contact") String contact, @Param("contact2") String contact2) ;
+
 	
 
 }

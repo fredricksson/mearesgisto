@@ -24,13 +24,26 @@ public class BeliverServiceImpl implements BeliverService {
 	BeliverRepository beliverRepository;
 	@Override
 	public Beliver createBeliver(Beliver beliver) {
-		Beliver beliver1 = beliverRepository.findBeliverByContact(beliver.getContact());
-		if (beliver1 == null) {
-			beliver.setDate(LocalDateTime.now());
-			return  beliverRepository.save(beliver);
+		Beliver beliver1 = null;
+		try {
+			String contact2 = beliver.getContact().replaceAll("\\s", "");
+			contact2 = contact2.replace("(", "");
+			contact2 = contact2.replace(")", "");
+			beliver1 = beliverRepository.findBeliverByContact(beliver.getContact(), contact2);
+			if (beliver1 == null) {
+				beliver.setDate(LocalDateTime.now());
+				return  beliverRepository.save(beliver);
+			} else {
+				throw new BeliverExists("Crente Existente!#"+beliver1.getName()+"#"+beliver1.getId());
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			throw new BeliverExists(e.getMessage());
 		}
 		
-		throw new BeliverExists("Crente Existente!#"+beliver1.getName()+"#"+beliver1.getId());
+		
+		
+		
 	}
 	@Override
 	public Beliver getBeliverById(Long id) {
@@ -59,7 +72,10 @@ public class BeliverServiceImpl implements BeliverService {
 	@Override
 	public Beliver findBeliverByContact(String contact) {
 		try {
-			Beliver beliver = beliverRepository.findBeliverByContact(contact);
+			String contact2 = contact.replaceAll("\\s", "");
+			contact2 = contact2.replace("(", "");
+			contact2 = contact2.replace(")", "");
+			Beliver beliver = beliverRepository.findBeliverByContact(contact, contact2);
 			if (beliver == null) {
 				throw new ResourceNotFoundException("Nao existe nenhum crente com esse contacto");
 			}
