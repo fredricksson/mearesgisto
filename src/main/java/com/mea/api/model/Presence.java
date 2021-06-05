@@ -10,7 +10,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+//import com.fasterxml.jackson.annotation.JsonBackReference;
 
 
 
@@ -31,8 +31,8 @@ public class Presence {
 	
 	
 	@ManyToOne
-	@JsonBackReference
-	@JoinColumn(name = "beliver_id", nullable = false, referencedColumnName = "id")
+	//@JsonBackReference
+	@JoinColumn(name = "beliver_id", nullable = false)
 	private Beliver beliver;
 	
 	@OneToOne
