@@ -1,26 +1,29 @@
 package com.mea.api.model;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 
-import lombok.Getter;
-import lombok.Setter;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 
 @Entity
 @Table(name = "beliver")
-
 public class Beliver {
 
 	@Id
-	//@SequenceGenerator(name = "some",sequenceName = "seq_name_in_db2")
+	//@SequenceGenerator(name = "some",sequenceName = "seq_name_in_db",allocationSize = 1)
 	@GeneratedValue(strategy = GenerationType.IDENTITY/*, generator = "some"*/)
 	private Long id;
 	
@@ -42,6 +45,9 @@ public class Beliver {
 	@Column(nullable = false)
 	@NotBlank(message = "Endereco nao pode estar vazio")
 	private String address;
+	@OneToMany(mappedBy = "beliver", fetch = FetchType.EAGER)
+	@JsonManagedReference
+	private List<Presence> presences;
 	
 	private int num_block;
 	private int num_home;
@@ -92,6 +98,12 @@ public class Beliver {
 	}
 	public void setDate(LocalDateTime date) {
 		this.date = date;
+	}
+	public List<Presence> getPresences() {
+		return presences;
+	}
+	public void setPresences(List<Presence> presences) {
+		this.presences = presences;
 	}
 
 		

@@ -2,14 +2,12 @@ package com.mea.api.service.impl;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.mea.api.error.RegisterException;
 import com.mea.api.error.ResourceNotFoundException;
-import com.mea.api.model.Beliver;
 import com.mea.api.model.Register;
 import com.mea.api.repository.RegisterRepository;
 import com.mea.api.service.RegisterService;

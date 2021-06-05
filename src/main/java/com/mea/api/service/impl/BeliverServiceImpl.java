@@ -2,21 +2,15 @@ package com.mea.api.service.impl;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.mea.api.error.BeliverExists;
 import com.mea.api.error.ResourceNotFoundException;
-import com.mea.api.misc.ApiResponseObject;
 import com.mea.api.model.Beliver;
 import com.mea.api.repository.BeliverRepository;
 import com.mea.api.service.BeliverService;
-
-import javassist.NotFoundException;
 
 @Service
 public class BeliverServiceImpl implements BeliverService {
