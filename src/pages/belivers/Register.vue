@@ -134,7 +134,6 @@ export default {
       headers: null
     }
   },
-
   methods: {
     saveCultInLocalStorage () {
       if (this.cult !== null) {
@@ -170,7 +169,6 @@ export default {
       try{
         const headers = this.headers
         const { data } = await Vue.prototype.$axios.get(`${process.env.API}presences/quantity/${this.cult}`, { headers } )
-
         if (data.error) {
           this.$router.push('/login')
         } else {
@@ -190,7 +188,7 @@ export default {
     async registerBeliver () {
       try {
         const headers = this.headers
-        const { data } = await Vue.prototype.$axios.post(`${process.env.API}presence/${this.id}/${this.cult}`, {} ,{ headers } )
+        const { data } = await Vue.prototype.$axios.post(`${process.env.API}presence/${this.id}/${this.cult}`, {temperature: this.temperature} ,{ headers } )
           if (data.error) {
             this.$q.notify({
                 type: 'negative',
@@ -254,7 +252,6 @@ export default {
               this.confirmName = data.data.name
               this.confirm = true
             }
-
         }
     }
   }
@@ -262,5 +259,4 @@ export default {
 </script>
 
 <style>
-
 </style>

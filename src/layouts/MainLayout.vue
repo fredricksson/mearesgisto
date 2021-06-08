@@ -7,9 +7,30 @@
           <q-avatar>
             <img src="~assets/logo.png">
           </q-avatar>
-          Mea
+          Mearegisto <i>2.0</i>
         </q-toolbar-title>
-        <q-btn flat text-color="purple" @click="logout()">Sair</q-btn>
+         <div class="col-auto">
+            <q-btn color="grey-1" round flat icon="more_vert">
+              <q-menu cover auto-close>
+                <q-list>
+                  <q-item clickable  @click="logout()">
+                      <q-item-section avatar>
+                        <q-icon color="primary" name="logout" />
+                      </q-item-section>
+                    <q-item-section >Sair</q-item-section>
+                  </q-item>
+                  <q-item clickable @click="mode">
+                     <q-item-section avatar>
+                      <q-icon color="primary" name="invert_colors" />
+                    </q-item-section>
+                    <q-item-section v-if="this.$q.dark.isActive" >light-mode</q-item-section>
+                    <q-item-section v-else >dark-mode</q-item-section>
+
+                  </q-item>
+                </q-list>
+              </q-menu>
+            </q-btn>
+          </div>
       </q-toolbar>
 
       <q-tabs align="left">
@@ -17,23 +38,15 @@
         <q-route-tab to="/newBeliver" icon="person_add" label="Cadastrar" />
         <q-route-tab to="/search" icon="search" label="Procurar" />
       </q-tabs>
+      
     </q-header>
-
+<q-slide-transition>
     <q-page-container>
+      
       <router-view />
+      
     </q-page-container>
-
-    <q-footer elevated class="bg-grey-8 text-white">
-      <q-toolbar>
-        <q-toolbar-title>
-          <q-avatar>
-            <img src="~assets/bandtech.jpg">
-          </q-avatar>
-          2.0 v
-        </q-toolbar-title>
-      </q-toolbar>
-    </q-footer>
-
+</q-slide-transition>
   </q-layout>
 </template>
 
@@ -45,8 +58,11 @@ export default {
   },
   methods: {
     logout () {
-      this.$q.localStorage.remove('token')
+      this.$q.cookies.remove('token')
       this.$router.push('/login')
+    },
+    mode () {
+      this.$q.dark.set(!this.$q.dark.isActive)
     }
   }
 }

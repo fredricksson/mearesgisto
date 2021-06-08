@@ -1,4 +1,4 @@
-import { Cookies, Loading } from 'quasar'
+import { Cookies, Loading, QSpinnerRings } from 'quasar'
 const routes = [
   {
     path: '/',
@@ -6,22 +6,20 @@ const routes = [
     children: [
       { path: '', component: () => import('pages/belivers/Register.vue'), 
       beforeEnter: (to, from, next) => {
-         Loading.show({ spinnerColor: 'primary', backgroundColor: 'yellow-3'
+         Loading.show({ spinnerColor: 'primary', backgroundColor: 'yellow-3', spinner: QSpinnerRings
          }); 
          if (Cookies.has('token')) next()
           else next('/login')
       } },
       { path: 'register', component: () => import('pages/belivers/Register.vue'),
           beforeEnter: (to, from, next) => {
-            Loading.show({ spinnerColor: 'primary', backgroundColor: 'yellow-3'
-            }); 
             if (Cookies.has('token')) next()
             else next('/login')
         }
       },
       { path: 'newBeliver', component: () => import('pages/belivers/Save.vue'),
           beforeEnter: (to, from, next) => {
-            Loading.show({ spinnerColor: 'primary', backgroundColor: 'yellow-3'
+            Loading.show({ spinnerColor: 'primary', backgroundColor: 'yellow-3', spinner: QSpinnerRings
             }); 
             if (Cookies.has('token')) next()
             else next('/login')
@@ -29,7 +27,7 @@ const routes = [
       },
       { path: 'search', component: () => import('pages/belivers/Seach.vue'),
           beforeEnter: (to, from, next) => {
-            Loading.show({ spinnerColor: 'primary', backgroundColor: 'yellow-3'
+            Loading.show({ spinnerColor: 'primary', backgroundColor: 'yellow-3', spinner: QSpinnerRings
             }); 
             if (Cookies.has('token')) next()
             else next('/login')

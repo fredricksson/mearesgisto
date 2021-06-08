@@ -50,7 +50,7 @@ module.exports = function (ctx) {
       env: {
         API: ctx.dev
           ? 'http://localhost:8080/api/v1/'
-          : ' https://git.heroku.com/mea-api.git/api/v1/'
+          : 'https://mea-api.herokuapp.com/api/v1/'
       },
       // transpile: false,
 

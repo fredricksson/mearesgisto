@@ -131,7 +131,6 @@ export default {
       headers: null
     }
   },
-
   methods: {
     next () {
         this.$refs.name.validate()
@@ -178,7 +177,6 @@ export default {
                 this.$router.push('login')
                 return
             }
-
             if (data.error) {
               notif({
                 type: 'negative',
@@ -219,5 +217,4 @@ export default {
 </script>
 
 <style>
-
 </style>
