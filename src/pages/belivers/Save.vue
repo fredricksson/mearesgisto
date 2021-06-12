@@ -6,7 +6,7 @@
       v-model="step"
       vertical
       color="primary"
-      class="bg-yellow-1"
+      :class="this.$q.dark.isActive ?  'shadow-3 bg-grey-10' : 'shadow-3 bg-yellow-1'"
       animated
     >
       <q-step
@@ -26,20 +26,20 @@
                 </template>
               </q-input>
               <q-input filled clearable v-model="contact" prefix="+258:"
-                    mask="(##) ## ## ###"
+               type="number"
                         ref="contact"
                         lazy-rules
-                        :rules="[ val => val && val.length === 14 && !val.includes('_')   || `contacto invalido!`]"
+                        :rules="[ val => val && val.length === 9  || `contacto invalido!`]"
                         fill-mask>
                         <template v-slot:prepend>
                             <q-icon name="local_phone" />
                         </template>
                     </q-input>
                     <q-input filled clearable v-model="parentContact" prefix="+258:"
-                    mask="(##) ## ## ###"
+                    type="number"
                         ref="parentContact"
                         lazy-rules
-                        :rules="[ val => val && val.length === 14 && !val.includes('_')   || `contacto de familiar invalido!`]"
+                        :rules="[ val => val && val.length === 9   || `contacto de familiar invalido!`]"
                         fill-mask>
                         <template v-slot:prepend>
                             <q-icon name="local_phone" />
@@ -64,7 +64,7 @@
        <div class="q-gutter-md">
            <q-input filled clearable v-model="adress" type="text" label="Morada/Bairro"
              ref="adress"
-            :rules="[val => !!val || 'Morada/bairo  é obrigatoria!']">
+            :rules="[val => !!val || 'Morada/bairro  é obrigatoria!']">
                 <template v-slot:prepend>
                   <q-icon name="location_on" />
                 </template>

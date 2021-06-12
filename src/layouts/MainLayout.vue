@@ -1,7 +1,7 @@
 <template>
-  <q-layout view="hHh lpR fFf">
+  <q-layout view="hHh lpR fFf  bg-yellow-1">
 
-    <q-header elevated class="bg-primary text-white" height-hint="98">
+    <q-header  class="bg-primary text-white" >
       <q-toolbar>
         <q-toolbar-title>
           <q-avatar>
@@ -38,24 +38,16 @@
         <q-route-tab to="/newBeliver" icon="person_add" label="Cadastrar" />
         <q-route-tab to="/search" icon="search" label="Procurar" />
       </q-tabs>
-      
     </q-header>
-<q-slide-transition>
-    <q-page-container>
-      
+
+    <q-page-container :class="this.$q.dark.isActive ?  ' bg-grey-8' : ' bg-yellow-1'">
       <router-view />
-      
     </q-page-container>
-</q-slide-transition>
   </q-layout>
 </template>
 
 <script>
 export default {
-  data () {
-    return {
-    }
-  },
   methods: {
     logout () {
       this.$q.cookies.remove('token')

@@ -1,26 +1,35 @@
 <template>
-  <q-page class="  row justify-center   q-pa-sm">
-      <div class="col-12 col-md-6 ">
-        <q-card square  class=" shadow-3 bg-yellow-1">
-          <q-card-section>
-               <q-card-section>
-            <span class="text-overline  text-yellow-10 q-my-xs" >Registados: {{ quantity }}</span>
-          </q-card-section>
-             <q-form class="q-px-sm  q-pb-lg q-gutter-md">
+  <q-page class="container ">
+    <div class="row q-mt-md ">
+      
+        <div class="col-10 q-ml-md">
+            <div class="text-bold text-yellow-10 q-mt-sm" style="font-size: 20px">Registados: {{ quantity }}</div>
+        </div>
+        
+    </div>
+    <!--<div class="row q-mt-md justify-center q-gutter-y-md "  > -->
+      <q-form
+      @submit.prevent="registerBeliverToCult"
+      class="row q-gutter-y-sm     q-mt-md justify-center q-pa-sm "
+    >
+            <q-card class="my-card shadow-5 col-12">
+                <q-card-section>
+                    <div class="text-bold">Cultos</div>
+                </q-card-section>
+            <q-card-section class="q-pt-none">
                 <q-select
                     ref="cult"
-                    filled
                     v-model="cult"
                     clearable
                     use-chips
-                    label="Cultos"
+                    label="Seleccione o culto"
                     :options="options"
                     @filter="filterFn"
                     @filter-abort="abortFilterFn"
                     @input="saveCultInLocalStorage"
-                    :rules="[val => !!val || 'Codigo é obrigatoria!']"
+                    :rules="[val => !!val || 'Culto é obrigatoria!']"
                 >
-                    <template v-slot:no-option>
+                   <template v-slot:no-option>
                     <q-item>
                         <q-item-section class="text-grey">
                         No results
@@ -28,34 +37,43 @@
                     </q-item>
                     </template>
                 </q-select>
-              <q-input filled clearable v-model="id"  type="number" label="Codigo do crente"
-              ref="id"
-              :rules="[val => !!val || 'Codigo é obrigatoria!']"
-              >
+            </q-card-section>
+          </q-card>
+            <q-card class="my-card shadow-5 col-12 ">
+                <q-card-section>
+                    <div class="text-bold">Codigo:</div>
+                </q-card-section>
+            <q-card-section class="q-pt-none">
+                 <q-input clearable v-model="id"  type="number" label="Introduzir o codigo" 
+                  ref="id"
+                  :rules="[val => !!val || 'Codigo é obrigatorio!']"
+                  >
                 <template v-slot:prepend>
                   <q-icon name="vpn_key" />
                 </template>
               </q-input>
-              <q-input filled  clearable v-model="temperature" type="number" label="Temperatura"
+            </q-card-section>
+          </q-card>
+            
+            <q-card class="my-card shadow-5 col-12">
+                <q-card-section>
+                    <div class="text-bold">Temperatura</div>
+                </q-card-section>
+            <q-card-section class="q-pt-none">
+                <q-input   clearable v-model="temperature" type="number" label="Introduzir a temperatura"
                 ref="temperature"
                 :rules="[val => !!val || 'Temperatura é obrigatoria!']">
                 <template v-slot:prepend>
                   <q-icon name="thermostat" />
                 </template>
               </q-input>
-            </q-form>
-          </q-card-section>
-          <q-card-actions class="q-px-md">
-            <q-btn unelevated :loading="loading" color="yellow-10" icon="check" @click="registerBeliverToCult" size="md" class="full-width" label="Registar" >
-                <template v-slot:loading>
-                <q-spinner-hourglass class="on-left" />
-                carregando...
-            </template>
-            </q-btn>
-          </q-card-actions>
-        </q-card>
-      </div>
-      <q-dialog v-model="confirm" persistent>
+            </q-card-section>
+          </q-card>
+        <div class="q-mt-md col-12 q-mb-md ">
+            <q-btn   :loading="loading" color="yellow-10 full-width" icon="check" type="submit" label="Registar" />
+        </div>
+      </q-form>
+<q-dialog v-model="confirm" persistent>
       <q-card>
         <q-card-section class="row justify-center items-center">
           
@@ -95,7 +113,7 @@
         </q-card-actions>
       </q-card>
     </q-dialog>
-  </q-page>
+</q-page> 
 </template>
 <script>
 import Vue from 'vue'
@@ -113,7 +131,7 @@ export default {
             icon: 'warning'
           })
       return
-    }  
+    }
     this.headers = {
       Authorization: `Bearer ${this.$q.cookies.get('token')}`
     }
@@ -257,6 +275,3 @@ export default {
   }
 }
 </script>
-
-<style>
-</style>
