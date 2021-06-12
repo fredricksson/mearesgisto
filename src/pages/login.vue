@@ -20,13 +20,20 @@
                   <q-icon name="person" />
                 </template>
               </q-input>
-              <q-input square clearable v-model="password" type="password" label="Contacto"
+              <q-input square clearable v-model="password" :type="isPwd ? 'password' : 'text'" label="Contacto"
               ref="contact"
             :rules="[val => !!val || 'Contacto esta vazio!']"
               >
                 <template v-slot:prepend>
                   <q-icon name="lock" />
                 </template>
+                <template v-slot:append>
+                <q-icon
+                  :name="isPwd ? 'visibility_off' : 'visibility'"
+                  class="cursor-pointer"
+                  @click="isPwd = !isPwd"
+                />
+              </template>
               </q-input>
             
           </q-card-section>
@@ -60,7 +67,8 @@ export default {
       username: '',
       password: '',
       loading: false,
-      msg: ''
+      msg: '',
+      isPwd: true
     }
   },
   methods: {

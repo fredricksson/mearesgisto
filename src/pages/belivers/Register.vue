@@ -60,7 +60,7 @@
                     <div class="text-bold">Temperatura</div>
                 </q-card-section>
             <q-card-section class="q-pt-none">
-                <q-input   clearable v-model="temperature" type="number" label="Introduzir a temperatura"
+                <q-input   clearable v-model.number="temperature" label="Introduzir a temperatura"
                 ref="temperature"
                 :rules="[val => !!val || 'Temperatura é obrigatoria!']">
                 <template v-slot:prepend>

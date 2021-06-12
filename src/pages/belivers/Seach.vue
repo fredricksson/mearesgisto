@@ -1,6 +1,6 @@
 <template>
   <q-page class="  container ">
-    <div class="q-pa-sm justify-center">
+    <div class="row q-pa-sm justify-center">
       <q-card class="my-card shadow-5 col-12">
                 <q-card-section>
                     <div class="text-bold">Contacto</div>
@@ -22,14 +22,14 @@
       </q-inner-loading>
           </q-card>
         <q-slide-transition>
-    <q-card v-if="loading && visible" class=" q-mt-md bg-yellow-10" >
+    <q-card v-if="loading && visible" class=" q-mt-md bg-yellow-10 col-12" >
 
       <q-card-section>
         <q-skeleton type="text"  class="text-subtitle1" />
         <q-skeleton type="text" width="50%" class="text-subtitle1" />
       </q-card-section>
     </q-card>
-    <q-card v-else-if="name"   class="my-card  q-mt-md bg-yellow-10">
+    <q-card v-else-if="name"   class="my-card  q-mt-md bg-yellow-10 col-12">
       <q-card-section>
         <div class="row items-center no-wrap">
           <div class="col">
