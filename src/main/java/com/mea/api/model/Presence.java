@@ -10,11 +10,13 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 //import com.fasterxml.jackson.annotation.JsonBackReference;
 
 
 
-@Entity
+@Entity(name = "presence")
 @Table(name = "presence")
 
 public class Presence {

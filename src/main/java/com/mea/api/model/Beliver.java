@@ -1,19 +1,24 @@
 package com.mea.api.model;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 
-@Entity
+
+@Entity(name = "beliver")
 @Table(name = "beliver")
 public class Beliver {
 
@@ -27,7 +32,7 @@ public class Beliver {
 	private String name;
 	
 	@Column(nullable = false)
-	@NotBlank(message = "Conctacto nao pode estar vazio")
+	@NotBlank(message = "Contacto nao pode estar vazio")
 	private String contact;
 	
 	@Column(nullable = false)
@@ -40,12 +45,53 @@ public class Beliver {
 	@Column(nullable = false)
 	@NotBlank(message = "Endereco nao pode estar vazio")
 	private String address;
-	//@OneToMany(mappedBy = "beliver", fetch = FetchType.EAGER)
-	//@JsonManagedReference
-	//private List<Presence> presences;
 	
-	private int num_block;
+	@JsonIgnore
+	@OneToMany(mappedBy = "beliver", fetch = FetchType.EAGER)
+	private List<Presence> presences = new ArrayList<>();
+	
+	
+	
 	private int num_home;
+	private int num_block;
+	
+	public Beliver() {
+		super();
+	}
+
+
+
+	public Beliver(@NotBlank(message = "nome nao pode estar vazio") String name,
+			@NotBlank(message = "Contacto nao pode estar vazio") String contact,
+			@NotBlank(message = "Conctacto familiar nao pode estar vazio") String parentContact,
+			@NotBlank(message = "Endereco nao pode estar vazio") String address, int num_block, int num_home) {
+		this.name = name;
+		this.contact = contact;
+		this.parentContact = parentContact;
+		this.address = address;
+		this.num_block = num_block;
+		this.num_home = num_home;
+	}
+	
+	
+	
+	public Beliver(Long id, @NotBlank(message = "nome nao pode estar vazio") String name,
+			@NotBlank(message = "Contacto nao pode estar vazio") String contact,
+			@NotBlank(message = "Conctacto familiar nao pode estar vazio") String parentContact, LocalDateTime date,
+			@NotBlank(message = "Endereco nao pode estar vazio") String address, int num_home, int num_block) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.contact = contact;
+		this.parentContact = parentContact;
+		this.date = date;
+		this.address = address;
+		this.num_home = num_home;
+		this.num_block = num_block;
+	}
+
+
+
 	public Long getId() {
 		return id;
 	}
@@ -93,6 +139,18 @@ public class Beliver {
 	}
 	public void setDate(LocalDateTime date) {
 		this.date = date;
+	}
+
+
+
+	public List<Presence> getPresences() {
+		return presences;
+	}
+
+
+
+	public void setPresences(List<Presence> presences) {
+		this.presences = presences;
 	}
 		
 	

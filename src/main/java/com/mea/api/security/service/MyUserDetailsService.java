@@ -20,7 +20,6 @@ public class MyUserDetailsService implements UserDetailsService {
 		// TODO Auto-generated method stub
 		Optional<Register> register = registerRepository.findRegisterByName(name);
 		register.orElseThrow(() -> new ResourceNotFoundException("Registador inválido: " + name));
-
 		return register.map(MyUserDetails::new).get();
 	}
 

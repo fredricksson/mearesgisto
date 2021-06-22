@@ -34,18 +34,18 @@ public class AuthenticateController {
 	@Autowired
 	private JwtUtil jwtTokenUtil;
 	@CrossOrigin
-	@PostMapping(value = "/authenticate")
+	@PostMapping(value = "/auth")
 	public ResponseEntity<Map<String, Object>> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest)
 			throws Exception {
 		try {
 			authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-					authenticationRequest.getUsername(), authenticationRequest.getPassword()));
+					authenticationRequest.getUsername().trim(), authenticationRequest.getPassword().trim()));
 		} catch (BadCredentialsException e) {
+			
 			String message = "utilizador/senha inválida!";
 			throw new ResourceNotFoundException(message);
 		}
 		final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
-
 		final String jwt = jwtTokenUtil.generateToken(userDetails);
 
 		Map<String, Object> apiResponse = new ApiResponseObject().response(Boolean.FALSE, "Autenticado com successo!",

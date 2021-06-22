@@ -17,6 +17,8 @@ public interface RegisterService {
 	
 	Register createRegister(Register resgister);
 	
+	Register createRegisterAdmin(Register resgister);
+	
 	List<Register> getRegisters();
 	
 	Register findByContact(String contact);

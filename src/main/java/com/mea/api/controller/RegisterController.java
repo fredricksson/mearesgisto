@@ -24,12 +24,12 @@ public class RegisterController {
 	@Autowired
 	RegisterService registerService;
 	
-	@GetMapping("/registers")
+	@GetMapping("/admin/registers")
 	public ResponseEntity<Map<String, Object>> all(){
 		return new ResponseEntity<>(new ApiResponseObject().response(Boolean.FALSE, "Sucesso!",registerService.getRegisters()), HttpStatus.OK);
 	}
 	
-	@PostMapping("/registers")
+	@PostMapping("/admin/registers")
 	public ResponseEntity<Map<String, Object>> create(@Valid @RequestBody Register register) {
 		Map<String, Object> res = new ApiResponseObject().response(Boolean.FALSE, "Registador adicionado com sucesso!", registerService.createRegister(register));
 		return new ResponseEntity<>(res, HttpStatus.OK);

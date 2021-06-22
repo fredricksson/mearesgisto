@@ -38,14 +38,19 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity httpSecurity) throws Exception {
 		httpSecurity.csrf().disable()
-		.authorizeRequests()
-		.antMatchers("/api/v1/authenticate")
-		.permitAll()
-		.anyRequest().
-		authenticated()
+			.authorizeRequests()
+			.antMatchers("/api/v1/auth")
+			.permitAll()
 		.and()
-		.exceptionHandling()
-		.authenticationEntryPoint(jwtAuthenticationEntryPoint)
+			.authorizeRequests()
+			.antMatchers("/api/v1/admin/**")
+			.hasRole("ADMIN")
+			.anyRequest()
+			.authenticated()
+		.and()
+		
+			.exceptionHandling()
+			.authenticationEntryPoint(jwtAuthenticationEntryPoint)
 		.and()
 		.sessionManagement()
 		.sessionCreationPolicy(SessionCreationPolicy.STATELESS);

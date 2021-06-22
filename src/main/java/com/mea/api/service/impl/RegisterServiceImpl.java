@@ -9,14 +9,19 @@ import org.springframework.stereotype.Service;
 import com.mea.api.error.RegisterException;
 import com.mea.api.error.ResourceNotFoundException;
 import com.mea.api.model.Register;
+import com.mea.api.model.Role;
 import com.mea.api.repository.RegisterRepository;
 import com.mea.api.service.RegisterService;
+import com.mea.api.service.RoleService;
 
 @Service
 public class RegisterServiceImpl implements RegisterService {
 	
 	@Autowired
 	RegisterRepository registerRepository;
+	
+	@Autowired
+	RoleService roleService;
 	@Override
 	public Register findRegisterById(Long id) {
 		try {
@@ -39,6 +44,19 @@ public class RegisterServiceImpl implements RegisterService {
 	public Register createRegister(Register resgister) {
 		try {
 			resgister.setDate(LocalDateTime.now());
+			Role role = roleService.findRoleByName("ROLE_GUEST");
+			resgister.getRoles().add(role);
+			return registerRepository.save(resgister);
+			
+		} catch (Exception e) {
+			throw new RegisterException(e.getMessage());
+		}
+	}
+	
+	@Override
+	public Register createRegisterAdmin(Register resgister) {
+		try {
+			resgister.setDate(LocalDateTime.now());
 			return registerRepository.save(resgister);
 			
 		} catch (Exception e) {
@@ -49,7 +67,7 @@ public class RegisterServiceImpl implements RegisterService {
 	@Override
 	public Register findByContact(String contact) {
 		try {
-			return registerRepository.findByContact(contact).get();
+			return registerRepository.findByContact(contact.trim()).get();
 		} catch (Exception e) {
 			throw new ResourceNotFoundException("Registador nao encontrado");
 		}
@@ -58,7 +76,7 @@ public class RegisterServiceImpl implements RegisterService {
 	@Override
 	public Register verify(String name, String contact) {
 		try {
-			return registerRepository.verify(name, contact).get();
+			return registerRepository.verify(name.trim(), contact.trim()).get();
 		} catch (Exception e) {
 			throw new ResourceNotFoundException("Credencias invalidas");
 		}

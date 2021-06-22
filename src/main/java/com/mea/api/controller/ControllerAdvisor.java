@@ -64,7 +64,7 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
 	
 	@ExceptionHandler(MalformedJwtException.class)
 	public ResponseEntity<Object> handleInvalidJWTException(MalformedJwtException ex, WebRequest request) {
-		String message = "O Token passado é inválido!";
+		String message = "Malformed: O Token passado é inválido!";
 		Map<String, Object> res = new ApiResponseObject().response(Boolean.TRUE, message , Arrays.asList());
 		return new ResponseEntity<>(res, HttpStatus.OK);
 	}

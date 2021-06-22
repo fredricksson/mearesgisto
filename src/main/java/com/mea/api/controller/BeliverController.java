@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.mea.api.dto.request.BeliverDTO;
+import com.mea.api.dto.response.BeliverResponseDTO;
 import com.mea.api.misc.ApiResponseObject;
 import com.mea.api.model.Beliver;
 import com.mea.api.service.BeliverService;
@@ -25,6 +27,7 @@ public class BeliverController {
 	
 	@Autowired
 	BeliverService beliverService;
+	
 	
 	@GetMapping("/belivers")
 	public ResponseEntity<Map<String, Object>> all(){
@@ -38,8 +41,10 @@ public class BeliverController {
 		return  new ResponseEntity<>(res, HttpStatus.OK);
 	}
 	@PostMapping("/belivers")
-	public ResponseEntity<Map<String, Object>> newBeliver(@Valid @RequestBody Beliver beliver) {
-		Map<String, Object> response = new ApiResponseObject().response(Boolean.FALSE, "Success!",beliverService.createBeliver(beliver));
+	public ResponseEntity<Map<String, Object>> newBeliver(@Valid @RequestBody BeliverDTO dto) {
+		Beliver beliver = beliverService.createBeliver(dto.converter());
+		
+		Map<String, Object> response = new ApiResponseObject().response(Boolean.FALSE, "Success!", BeliverResponseDTO.BeiverToDTO(beliver));
 		return new ResponseEntity<>(response,HttpStatus.CREATED);
 	} 
     @GetMapping("/belivers/{id}")
@@ -47,6 +52,19 @@ public class BeliverController {
     	Map<String, Object> res = new ApiResponseObject().response(Boolean.FALSE, "Successo!", beliverService.getBeliverById(id));
     	return  new ResponseEntity<>(res, HttpStatus.OK);
 	}
+    
+    //return beliver with his presences
+    @GetMapping("/belivers/presences/{id}")
+   	public ResponseEntity<Map<String, Object>> getBeliversWithPresence(@PathVariable("id") Long id){
+       	Map<String, Object> res = new ApiResponseObject().response(Boolean.FALSE, "Successo!", beliverService.findBeliverWithPresencesPageable(0));
+       	return  new ResponseEntity<>(res, HttpStatus.OK);
+   	}
+    
+    @GetMapping("/belivers/presences/{id}/{page}")
+   	public ResponseEntity<Map<String, Object>> getPresencesBysers(@PathVariable("id") Long id, @PathVariable("page") int page){
+       	Map<String, Object> res = new ApiResponseObject().response(Boolean.FALSE, "Successo!", beliverService.findPresences(id, page));
+       	return  new ResponseEntity<>(res, HttpStatus.OK);
+   	}
     
     @PutMapping("belivers/{id}")
     public ResponseEntity<Map<String, Object>> updateBeliver(@Valid @RequestBody Beliver beliver, @PathVariable("id") Long id){

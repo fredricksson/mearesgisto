@@ -62,6 +62,8 @@ public class JwtUtil {
 
 		claims.put("id", user.getId());
 		claims.put("name", user.getName());
+		claims.put("role", user.getRoles());
+	 
 
 		return createToken(claims, userDetails.getUsername());
 	}
@@ -83,7 +85,6 @@ public class JwtUtil {
 	}
 
 	public Boolean validateToken(String token, UserDetails userDetails) {
-
 		if (isTokenExpired(token))
 			throw new ResourceNotFoundException("O token expirou!");
 

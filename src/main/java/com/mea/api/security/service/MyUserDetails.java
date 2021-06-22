@@ -15,10 +15,13 @@ public class MyUserDetails implements UserDetails {
 
 	private final String userName;
 	private final String password;
-
+	private final List<GrantedAuthority> authorities;
 	public MyUserDetails(Register user) {
 	    	this.userName = user.getName();
 	    	this.password = user.getContact();
+	    	this.authorities = user.getRoles().stream()
+	    			.map(role -> new SimpleGrantedAuthority(role.getName()))
+	    			.collect(Collectors.toList());
 	    }
 
 	
@@ -56,6 +59,6 @@ public class MyUserDetails implements UserDetails {
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		// TODO Auto-generated method stub
-		return null;
+		return authorities;
 	}
 }
