@@ -1,13 +1,18 @@
 package com.mea.api.service.impl;
 
 import java.time.LocalDateTime;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import com.mea.api.error.RegisterException;
 import com.mea.api.error.ResourceNotFoundException;
+import com.mea.api.model.Presence;
 import com.mea.api.model.Register;
 import com.mea.api.model.Role;
 import com.mea.api.repository.RegisterRepository;
@@ -35,9 +40,15 @@ public class RegisterServiceImpl implements RegisterService {
 	}
 
 	@Override
-	public List<Register> getRegisters() {
+	public Map<String, Object> getRegisters(int page) {
 		// TODO Auto-generated method stub
-		return registerRepository.findAll();
+		Map<String, Object>  data = new LinkedHashMap<>();
+		Page<Register> result = registerRepository.findAll(PageRequest.of(page, 40));
+		data.put("page", result.getNumber());
+		data.put("TotalRecords", result.getTotalElements());
+		data.put("numPages", result.getTotalPages());
+		data.put("registers", result.getContent());
+		return data;
 	}
 
 	@Override

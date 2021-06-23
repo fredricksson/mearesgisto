@@ -1,6 +1,7 @@
 package com.mea.api.service;
 
 
+import java.sql.Date;
 import java.util.Map;
 
 import org.springframework.stereotype.Service;
@@ -15,4 +16,6 @@ public interface PresenceService {
 	Map<String, Object> getPresences(int page);
 	
 	int quantityOfBeliversOnCult(String cult);
+	
+	Map<String, Object> getPresences(Date date, String cult, int page);
 }

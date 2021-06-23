@@ -1,5 +1,6 @@
 package com.mea.api.controller;
 
+import java.sql.Date;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -43,15 +44,23 @@ public class PresenceController {
 		
 	}
 	
-	@GetMapping("presences")
+	@GetMapping("admin/presences")
 	public ResponseEntity<Map<String, Object>> findAllPaginable(){
-		return new ResponseEntity<>(presenceService.getPresences(0),HttpStatus.OK);
+		Map<String, Object> res = new ApiResponseObject().
+				   response(Boolean.FALSE, "Sucesso!", presenceService.getPresences(0));
+		return new ResponseEntity<>(res, HttpStatus.OK);
 	}
-	
-	@GetMapping("presences/quantity/{name}")
-	public ResponseEntity<Map<String, Object>> quantityOfBeliversOnCult(@PathVariable("name") String name){
+	// return quantity of belivers regited for cult
+	@GetMapping("presences/quantity/{name_cult}")
+	public ResponseEntity<Map<String, Object>> quantityOfBeliversOnCult(@PathVariable("name_cult") String name){
 		Map<String, Object> res = new ApiResponseObject().
 	   response(Boolean.FALSE, "Sucesso!", presenceService.quantityOfBeliversOnCult(name));
+	   return new ResponseEntity<>(res, HttpStatus.OK);
+	}
+	@GetMapping("/admin/presences/{cult}/{date}/{page}")
+	public ResponseEntity<Map<String, Object>> filterPresences(@PathVariable("cult") String name, @PathVariable("date") Date date, @PathVariable("page") int page){
+		Map<String, Object> res = new ApiResponseObject().
+	   response(Boolean.FALSE, "Sucesso!", presenceService.getPresences(date, name, page));
 	   return new ResponseEntity<>(res, HttpStatus.OK);
 	}
 }

@@ -96,6 +96,25 @@ public class PresenceServiceImpl implements PresenceService{
 		
 	}
 
+
+	@Override
+	@Transactional
+	public Map<String, Object> getPresences(java.sql.Date date, String cult, int page) {
+		try {
+			Map<String, Object>  data = new LinkedHashMap<>();
+			Long id  = cultRepository.getId(cult);
+			Page<Presence> result = presenceRepository.presences(id, date, PageRequest.of(page, 50));
+			data.put("page", result.getNumber());
+			data.put("TotalRecords", result.getTotalElements());
+			data.put("numPages", result.getTotalPages());
+			data.put("presences", result.getContent());
+			return data;
+		} catch (Exception e) {
+			throw new ResourceNotFoundException("erro: "+e.getMessage());
+		}
+		
+	}
+
 	
 	
 

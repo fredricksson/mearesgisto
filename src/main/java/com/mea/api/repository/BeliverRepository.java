@@ -30,7 +30,5 @@ public interface BeliverRepository extends JpaRepository<Beliver, Long>{
 	@Query(value = "select  b from beliver b left join fetch b.presences", nativeQuery = false)
 	List<BeliverWithPresencesDTO> findBeliverWithPresences();
 	
-	@Query(value = "select distinct * from beliver b left join  presences p where p.beliver_id = b.id", nativeQuery = true)
-	Page<IBeliverWithPresences> findBeliverWithPresencesPagenable(Pageable pageable);
 
 }

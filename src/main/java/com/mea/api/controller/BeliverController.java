@@ -29,7 +29,7 @@ public class BeliverController {
 	BeliverService beliverService;
 	
 	
-	@GetMapping("/belivers")
+	@GetMapping("admin/belivers")
 	public ResponseEntity<Map<String, Object>> all(){
 		Map<String, Object> response = new ApiResponseObject().response(Boolean.FALSE, "Success!", beliverService.findAllBelivers());
 
@@ -54,19 +54,19 @@ public class BeliverController {
 	}
     
     //return beliver with his presences
-    @GetMapping("/belivers/presences/{id}")
+    @GetMapping("admin/belivers/presences/{id}")
    	public ResponseEntity<Map<String, Object>> getBeliversWithPresence(@PathVariable("id") Long id){
-       	Map<String, Object> res = new ApiResponseObject().response(Boolean.FALSE, "Successo!", beliverService.findBeliverWithPresencesPageable(0));
+       	Map<String, Object> res = new ApiResponseObject().response(Boolean.FALSE, "Successo!", beliverService.findBeliverWithPresences());
        	return  new ResponseEntity<>(res, HttpStatus.OK);
    	}
     
-    @GetMapping("/belivers/presences/{id}/{page}")
+    @GetMapping("admin/belivers/presences/{id}/{page}")
    	public ResponseEntity<Map<String, Object>> getPresencesBysers(@PathVariable("id") Long id, @PathVariable("page") int page){
        	Map<String, Object> res = new ApiResponseObject().response(Boolean.FALSE, "Successo!", beliverService.findPresences(id, page));
        	return  new ResponseEntity<>(res, HttpStatus.OK);
    	}
     
-    @PutMapping("belivers/{id}")
+    @PutMapping("admin/belivers/{id}")
     public ResponseEntity<Map<String, Object>> updateBeliver(@Valid @RequestBody Beliver beliver, @PathVariable("id") Long id){
     	beliver.setId(id);
     	Map<String, Object> res = new ApiResponseObject().response(Boolean.FALSE, "Successo!", beliverService.updateBeliver(beliver));

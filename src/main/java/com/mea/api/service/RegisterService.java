@@ -1,6 +1,6 @@
 package com.mea.api.service;
 
-import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
@@ -19,7 +19,7 @@ public interface RegisterService {
 	
 	Register createRegisterAdmin(Register resgister);
 	
-	List<Register> getRegisters();
+	Map<String, Object> getRegisters(int page);
 	
 	Register findByContact(String contact);
 	

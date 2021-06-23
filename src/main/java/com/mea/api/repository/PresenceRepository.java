@@ -3,6 +3,8 @@ package com.mea.api.repository;
 import java.sql.Date;
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -21,4 +23,7 @@ public interface PresenceRepository extends JpaRepository<Presence, Long>{
 	
 	@Query(value = "select * from presence where id = :id",nativeQuery = true)
 	List<Presence> presencesByIdBeliver(@Param("id") Long id);
+	
+	@Query(value = "select * from presence where date(date) = :date and cult_id = :cult_id", nativeQuery = true)
+	Page<Presence> presences(@Param("cult_id") Long cult_id, @Param("date") Date date, Pageable pageable);
 }

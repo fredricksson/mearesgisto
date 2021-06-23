@@ -122,17 +122,6 @@ public class BeliverServiceImpl implements BeliverService {
 		data.put("presences", result.getContent());
 		return data;
 	}
-	@Override
-	public Map<String, Object> findBeliverWithPresencesPageable(int page) {
-		Map<String, Object>  data = new LinkedHashMap<>();
-		Page<IBeliverWithPresences> result = beliverRepository.findBeliverWithPresencesPagenable(PageRequest.of(0, 20));
-		
-		data.put("page", result.getNumber());
-		data.put("TotalRecords", result.getTotalElements());
-		data.put("numPages", result.getTotalPages());
-		data.put("presences", result.getContent());
-		return data;
-	}
 	
 
 }
