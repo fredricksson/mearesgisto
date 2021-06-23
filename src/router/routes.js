@@ -36,6 +36,13 @@ const routes = [
     ]
   },
   {
+    path: '/admin',
+    component: () => import('layouts/AdminLayout.vue'),
+    children: [
+      { path: '', component: () => import('pages/admin/Belivers.vue'), beforeEnter: (to, from, next) => { Loading.show({ spinnerColor: 'primary', backgroundColor: 'yellow-3' }); next() } }
+    ]
+  },
+  {
     path: '/login',
     component: () => import('layouts/ClearLayout.vue'),
     children: [

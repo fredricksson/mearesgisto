@@ -70,7 +70,7 @@
             </q-card-section>
           </q-card>
         <div class="q-mt-md col-12 q-mb-md ">
-            <q-btn   :loading="loading" color="yellow-10 full-width" icon="check" type="submit" label="Registar" />
+            <q-btn   :loading="loading" size="md" color="yellow-10 full-width" icon="check" type="submit" label="Registar" />
         </div>
       </q-form>
 <q-dialog v-model="confirm" persistent>
@@ -219,6 +219,8 @@ export default {
                 message: data.message,
                 icon: 'check'
               })
+              this.temperature = ''
+              this.id = ''
               this.quantityBelivers()
           }
       } catch (error) {

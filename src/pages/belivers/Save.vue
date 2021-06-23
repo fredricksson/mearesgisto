@@ -160,7 +160,7 @@ export default {
             const dataSend = {
               name: this.name,
               contact: this.contact,
-              parentContact: this.parentContact,
+              parent_contact: this.parentContact,
               address: this.adress,
               num_block: this.numQuater,
               num_home: this.numHome

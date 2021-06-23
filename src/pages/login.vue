@@ -87,7 +87,7 @@ export default {
       }
       try {
         
-        const { data } = await Vue.prototype.$axios.post(`${process.env.API}authenticate`, dataSend)
+        const { data } = await Vue.prototype.$axios.post(`${process.env.API}auth`, dataSend)
         if (data.error) {
           this.msg = data.message
           this.$q.notify({
