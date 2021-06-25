@@ -16,9 +16,9 @@ public interface BeliverService {
 	
 	Beliver getBeliverById(Long id);
 	
-	List<Beliver> findAllBelivers();
+	Map<String, Object> findAllBelivers(int page);
 	
-	Beliver updateBeliver(Beliver beliver);
+	BeliverDTO updateBeliver(BeliverDTO beliver);
 	
 	Beliver findBeliverByContact(String contact);
 	
@@ -27,5 +27,7 @@ public interface BeliverService {
 	BeliverWithPresencesDTO findOneBeliver(Long id);
 	
 	Map<String,Object> findPresences(Long id, int page);
+	
+	Map<String,Object> searcRegisterByName(String value, int page);
 
 }

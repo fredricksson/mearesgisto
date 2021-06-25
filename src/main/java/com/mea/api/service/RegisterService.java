@@ -17,6 +17,8 @@ public interface RegisterService {
 	
 	Register createRegister(Register resgister);
 	
+	Register updateRegister(Register resgister);
+	
 	Register createRegisterAdmin(Register resgister);
 	
 	Map<String, Object> getRegisters(int page);
@@ -24,4 +26,6 @@ public interface RegisterService {
 	Register findByContact(String contact);
 	
 	Register verify(String name, String contact);
+	
+	Map<String,Object> searcRegisterByName(String value, int page);
 }

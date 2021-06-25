@@ -5,6 +5,7 @@ import java.util.Map;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,9 +30,9 @@ public class BeliverController {
 	BeliverService beliverService;
 	
 	
-	@GetMapping("admin/belivers")
-	public ResponseEntity<Map<String, Object>> all(){
-		Map<String, Object> response = new ApiResponseObject().response(Boolean.FALSE, "Success!", beliverService.findAllBelivers());
+	@GetMapping("admin/belivers/{page}")
+	public ResponseEntity<Map<String, Object>> all(@PathVariable int page){
+		Map<String, Object> response = new ApiResponseObject().response(Boolean.FALSE, "Success!", beliverService.findAllBelivers(page));
 
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
@@ -67,9 +68,15 @@ public class BeliverController {
    	}
     
     @PutMapping("admin/belivers/{id}")
-    public ResponseEntity<Map<String, Object>> updateBeliver(@Valid @RequestBody Beliver beliver, @PathVariable("id") Long id){
+    public ResponseEntity<Map<String, Object>> updateBeliver(@Valid @RequestBody BeliverDTO beliver, @PathVariable("id") Long id){
     	beliver.setId(id);
     	Map<String, Object> res = new ApiResponseObject().response(Boolean.FALSE, "Successo!", beliverService.updateBeliver(beliver));
+    	return  new ResponseEntity<>(res, HttpStatus.OK);
+    }
+    
+    @GetMapping("admin/belivers/search/{value}/{page}")
+    public ResponseEntity<Map<String, Object>> searchBeliver(@PathVariable("value") String value,@PathVariable("page") int page){
+    	Map<String, Object> res = new ApiResponseObject().response(Boolean.FALSE, "Successo!", beliverService.searcRegisterByName(value, page));
     	return  new ResponseEntity<>(res, HttpStatus.OK);
     }
     

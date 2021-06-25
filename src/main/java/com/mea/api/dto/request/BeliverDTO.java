@@ -11,6 +11,8 @@ public class BeliverDTO {
 	@NotBlank(message = "name nao pode estar vazio")
 	private String name;
 	
+	private Long id;
+	
 	@Column(nullable = false)
 	@NotBlank(message = "contact nao pode estar vazio")
 	private String contact;
@@ -20,7 +22,7 @@ public class BeliverDTO {
 	private String parent_contact;
 	
 	@Column(nullable = false)
-	@NotBlank(message = "nome nao pode estar vazio")
+	@NotBlank(message = "endereco(address) nao pode estar vazio")
 	private String address;
 	
 	private int num_block;
@@ -29,7 +31,17 @@ public class BeliverDTO {
 	
 	
 	public Beliver converter () {
-		return new Beliver(name, contact, parent_contact, address, num_block, num_home);
+		return new Beliver(id, name, contact, parent_contact, address, num_block, num_home);
+	}
+ 
+    
+	public Long getId() {
+		return id;
+	}
+
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 

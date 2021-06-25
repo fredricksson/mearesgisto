@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import com.mea.api.dto.interfaces.ICult;
 import com.mea.api.error.CultException;
 import com.mea.api.error.ResourceNotFoundException;
 import com.mea.api.model.Cult;
@@ -42,6 +43,19 @@ public class CultServiceImpl implements CultService {
 		// TODO Auto-generated method stub
 		Map<String, Object>  data = new LinkedHashMap<>();
 		Page<Cult> result = cultRepository.findAll(PageRequest.of(page, 30));
+		
+		data.put("page", result.getNumber());
+		data.put("TotalRecords", result.getTotalElements());
+		data.put("numPages", result.getTotalPages());
+		data.put("cults", result.getContent());
+		return data;
+	}
+
+	@Override
+	public Map<String, Object> searcCultByName(String value, int page) {
+		// TODO Auto-generated method stub
+		Map<String, Object>  data = new LinkedHashMap<>();
+		Page<ICult> result = cultRepository.searchCult(PageRequest.of(page, 30), value);
 		
 		data.put("page", result.getNumber());
 		data.put("TotalRecords", result.getTotalElements());

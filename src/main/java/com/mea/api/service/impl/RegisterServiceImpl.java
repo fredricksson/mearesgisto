@@ -2,7 +2,6 @@ package com.mea.api.service.impl;
 
 import java.time.LocalDateTime;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,9 +9,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import com.mea.api.dto.interfaces.IBeliver;
+import com.mea.api.dto.interfaces.IRegister;
 import com.mea.api.error.RegisterException;
 import com.mea.api.error.ResourceNotFoundException;
-import com.mea.api.model.Presence;
 import com.mea.api.model.Register;
 import com.mea.api.model.Role;
 import com.mea.api.repository.RegisterRepository;
@@ -43,7 +43,7 @@ public class RegisterServiceImpl implements RegisterService {
 	public Map<String, Object> getRegisters(int page) {
 		// TODO Auto-generated method stub
 		Map<String, Object>  data = new LinkedHashMap<>();
-		Page<Register> result = registerRepository.findAll(PageRequest.of(page, 40));
+		Page<IRegister> result = registerRepository.findRegisters(PageRequest.of(page, 40));
 		data.put("page", result.getNumber());
 		data.put("TotalRecords", result.getTotalElements());
 		data.put("numPages", result.getTotalPages());
@@ -54,10 +54,16 @@ public class RegisterServiceImpl implements RegisterService {
 	@Override
 	public Register createRegister(Register resgister) {
 		try {
-			resgister.setDate(LocalDateTime.now());
-			Role role = roleService.findRoleByName("ROLE_GUEST");
-			resgister.getRoles().add(role);
-			return registerRepository.save(resgister);
+			
+			if (registerRepository.findRegisterByContact(resgister.getContact()) == null) {
+
+				resgister.setDate(LocalDateTime.now());
+				Role role = roleService.findRoleByName("ROLE_GUEST");
+				resgister.getRoles().add(role);
+				return registerRepository.save(resgister);
+			} else {
+				throw new RegisterException("Ja existe um registador com esse contacto");
+			}
 			
 		} catch (Exception e) {
 			throw new RegisterException(e.getMessage());
@@ -91,6 +97,28 @@ public class RegisterServiceImpl implements RegisterService {
 		} catch (Exception e) {
 			throw new ResourceNotFoundException("Credencias invalidas");
 		}
+	}
+
+	@Override
+	public Register updateRegister(Register resgister) {
+			if (registerRepository.findById(resgister.getId()).isEmpty()) {
+				throw new RegisterException("Nao  existe um registador com esse ID");
+			}
+			resgister.setDate(LocalDateTime.now());
+			return registerRepository.save(resgister);
+		
+	}
+
+	@Override
+	public Map<String, Object> searcRegisterByName(String value, int page) {
+		Map<String, Object>  data = new LinkedHashMap<>();
+		Page<IRegister> result = registerRepository.searchRegister(PageRequest.of(page, 30), value);
+		
+		data.put("page", result.getNumber());
+		data.put("TotalRecords", result.getTotalElements());
+		data.put("numPages", result.getTotalPages());
+		data.put("registers", result.getContent());
+		return data;
 	}
 	
 

@@ -27,12 +27,17 @@ public class CultController {
 	
 	@PostMapping("admin/cults")
 	public ResponseEntity<Map<String, Object>> create(@Valid @RequestBody Cult cult ){
-		Map<String, Object> res = new ApiResponseObject().response(Boolean.TRUE, "Adiccionado com sucesso!", cultService.create(cult));
+		Map<String, Object> res = new ApiResponseObject().response(Boolean.FALSE, "Adiccionado com sucesso!", cultService.create(cult));
 		return new ResponseEntity<>(res,  HttpStatus.OK);
 	}
 	@GetMapping("admin/cults/{page}")
 	public ResponseEntity<Map<String, Object>> all(@PathVariable("page") int page){
-		Map<String, Object> res = new ApiResponseObject().response(Boolean.TRUE, " sucesso!", cultService.getCults(page));
+		Map<String, Object> res = new ApiResponseObject().response(Boolean.FALSE, " sucesso!", cultService.getCults(page));
 		return new ResponseEntity<>(res,  HttpStatus.OK);
 	}
+	 @GetMapping("admin/cults/search/{value}/{page}")
+	    public ResponseEntity<Map<String, Object>> searchBeliver(@PathVariable("value") String value,@PathVariable("page") int page){
+	    	Map<String, Object> res = new ApiResponseObject().response(Boolean.FALSE, "Successo!", cultService.searcCultByName(value, page));
+	    	return  new ResponseEntity<>(res, HttpStatus.OK);
+	    }
 }

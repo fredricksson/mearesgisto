@@ -14,5 +14,7 @@ public interface CultService {
 	Cult create(Cult cult);
 	
 	Map<String, Object> getCults(int page);
+	
+	Map<String, Object> searcCultByName(String value,int page);
 
 }

@@ -61,6 +61,10 @@ public class Beliver {
 
 
 
+
+
+
+
 	public Beliver(@NotBlank(message = "nome nao pode estar vazio") String name,
 			@NotBlank(message = "Contacto nao pode estar vazio") String contact,
 			@NotBlank(message = "Conctacto familiar nao pode estar vazio") String parentContact,
@@ -77,14 +81,13 @@ public class Beliver {
 	
 	public Beliver(Long id, @NotBlank(message = "nome nao pode estar vazio") String name,
 			@NotBlank(message = "Contacto nao pode estar vazio") String contact,
-			@NotBlank(message = "Conctacto familiar nao pode estar vazio") String parentContact, LocalDateTime date,
+			@NotBlank(message = "Conctacto familiar nao pode estar vazio") String parentContact,
 			@NotBlank(message = "Endereco nao pode estar vazio") String address, int num_home, int num_block) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.contact = contact;
 		this.parentContact = parentContact;
-		this.date = date;
 		this.address = address;
 		this.num_home = num_home;
 		this.num_block = num_block;

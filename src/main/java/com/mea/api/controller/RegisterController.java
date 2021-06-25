@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -36,5 +37,18 @@ public class RegisterController {
 		return new ResponseEntity<>(res, HttpStatus.OK);
 				
 	}
+	
+	@PutMapping("admin/registers/{id}")
+	public ResponseEntity<Map<String, Object>> edit(@Valid @RequestBody Register register, @PathVariable("id") Long id ) {
+		register.setId(id);
+		Map<String, Object> res = new ApiResponseObject().response(Boolean.FALSE, "Registador actualizado com sucesso!", registerService.updateRegister(register));
+		return new ResponseEntity<>(res, HttpStatus.OK);
+				
+	}
+	@GetMapping("admin/registers/search/{value}/{page}")
+    public ResponseEntity<Map<String, Object>> searchBeliver(@PathVariable("value") String value,@PathVariable("page") int page){
+    	Map<String, Object> res = new ApiResponseObject().response(Boolean.FALSE, "Successo!", registerService.searcRegisterByName(value, page));
+    	return  new ResponseEntity<>(res, HttpStatus.OK);
+    }
 
 }

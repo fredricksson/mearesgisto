@@ -40,8 +40,8 @@ public class meaInitialazer {
 
 				// Creates an admin;
 				Register admin = new Register();
-				admin.setName("Admin@2020");
-				admin.setContact("841234");
+				admin.setName("admin@2020");
+				admin.setContact("mea@2020");
 				admin.getRoles().add(roleAdmin);
 				
 				

@@ -18,6 +18,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.mea.api.dto.interfaces.IBeliver;
 import com.mea.api.dto.interfaces.IBeliverWithPresences;
 import com.mea.api.dto.interfaces.IPresenceDTO;
 import com.mea.api.dto.request.BeliverDTO;
@@ -70,14 +71,23 @@ public class BeliverServiceImpl implements BeliverService {
 		}
 	}
 	@Override
-	public List<Beliver> findAllBelivers() {
-		return beliverRepository.findAll();
+	public Map<String, Object> findAllBelivers(int page) {
+		Map<String, Object>  data = new LinkedHashMap<>();
+		Page<IBeliver> result = beliverRepository.findBelivers(PageRequest.of(page, 30));
+		
+		data.put("page", result.getNumber());
+		data.put("TotalRecords", result.getTotalElements());
+		data.put("numPages", result.getTotalPages());
+		data.put("belivers", result.getContent());
+		return data;
 	}
 	@Override
-	public Beliver updateBeliver(Beliver beliver) {
+	public BeliverDTO updateBeliver(BeliverDTO beliver) {
 		try {
 		    beliverRepository.findById(beliver.getId()).get();
-    		return beliverRepository.save(beliver);
+		    
+		    beliverRepository.save(beliver.converter());
+    		return beliver;
 		} catch (Exception e) {
 			// TODO: handle exception
 			throw new ResourceNotFoundException("Nao foi possivel actualizar o crente, id inexistente.");
@@ -120,6 +130,18 @@ public class BeliverServiceImpl implements BeliverService {
 		data.put("TotalRecords", result.getTotalElements());
 		data.put("numPages", result.getTotalPages());
 		data.put("presences", result.getContent());
+		return data;
+	}
+	@Override
+	public Map<String, Object> searcRegisterByName(String value, int page) {
+		// TODO Auto-generated method stub
+		Map<String, Object>  data = new LinkedHashMap<>();
+		Page<IBeliver> result = beliverRepository.searchBeliver(PageRequest.of(page, 30), value);
+		
+		data.put("page", result.getNumber());
+		data.put("TotalRecords", result.getTotalElements());
+		data.put("numPages", result.getTotalPages());
+		data.put("belivers", result.getContent());
 		return data;
 	}
 	
