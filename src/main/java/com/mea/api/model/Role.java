@@ -2,18 +2,13 @@ package com.mea.api.model;
 
 
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 
 @Entity(name = "role")
 @Table(name = "role")
 @Data
-@RequiredArgsConstructor
-@NoArgsConstructor
 public class Role {
 
 	@Id
