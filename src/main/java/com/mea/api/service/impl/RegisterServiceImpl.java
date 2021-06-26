@@ -101,7 +101,7 @@ public class RegisterServiceImpl implements RegisterService {
 
 	@Override
 	public Register updateRegister(Register resgister) {
-			if (registerRepository.findById(resgister.getId()).isEmpty()) {
+			if (registerRepository.findById(resgister.getId()).get()  == null) {
 				throw new RegisterException("Nao  existe um registador com esse ID");
 			}
 			resgister.setDate(LocalDateTime.now());
