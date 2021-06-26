@@ -31,8 +31,13 @@ public class CultController {
 		return new ResponseEntity<>(res,  HttpStatus.OK);
 	}
 	@GetMapping("admin/cults/{page}")
-	public ResponseEntity<Map<String, Object>> all(@PathVariable("page") int page){
+	public ResponseEntity<Map<String, Object>> getCultsPaginaded(@PathVariable("page") int page){
 		Map<String, Object> res = new ApiResponseObject().response(Boolean.FALSE, " sucesso!", cultService.getCults(page));
+		return new ResponseEntity<>(res,  HttpStatus.OK);
+	}
+	@GetMapping("/cults")
+	public ResponseEntity<Map<String, Object>> all(){
+		Map<String, Object> res = new ApiResponseObject().response(Boolean.FALSE, " sucesso!", cultService.all());
 		return new ResponseEntity<>(res,  HttpStatus.OK);
 	}
 	 @GetMapping("admin/cults/search/{value}/{page}")

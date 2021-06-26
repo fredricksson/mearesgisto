@@ -64,5 +64,11 @@ public class CultServiceImpl implements CultService {
 		return data;
 	}
 
+	@Override
+	public List<Cult> all() {
+		// TODO Auto-generated method stub
+		return cultRepository.findAll();
+	}
+
 
 }
